@@ -1,0 +1,26 @@
+body {
+  background: #222;
+}
+
+.cards {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.champion-container {
+  width: 11rem;
+  height: 20rem;
+  margin: 1rem;
+  background-size: contain;
+}
+
+.correct {
+  filter: opacity(0.3);
+  box-shadow: 0 0 0.8rem green;
+}
+
+.wrong {
+  filter: opacity(0.3);
+  box-shadow: 0 0 0.8rem red;
+}
