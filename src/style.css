@@ -16,11 +16,13 @@ body {
 }
 
 .correct {
-  filter: opacity(0.3);
+  opacity: 0.2;
+  transition: all 0.1s;
   box-shadow: 0 0 0.8rem green;
 }
 
 .wrong {
-  filter: opacity(0.3);
+  opacity: 0.2;
+  transition: all 0.1s;
   box-shadow: 0 0 0.8rem red;
 }
