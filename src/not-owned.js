@@ -5,7 +5,7 @@ import {linesRaw} from './lines.js';
 const lines = linesRaw.filter(line => {
   let champ = getChampion(line);
   let fileName = line.split('/').at(-1);
-  return fileName.includes(champ);
+  return fileName.startsWith(champ);
 });
 
 const champions = getChampions();
@@ -132,12 +132,4 @@ function choose(champElements) {
   play(line);
 }
 
-const playButton = document.createElement('input');
-playButton.type = 'button';
-playButton.value = 'Play';
-
 game();
-playButton.addEventListener('click', () => {
-  game();
-});
-document.body.appendChild(playButton);
