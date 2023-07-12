@@ -26,13 +26,19 @@ function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+let minAudioDuration = 2;
 let audio;
 function play(src) {
   audio = document.createElement('audio');
   audio.controls = true;
+  audio.addEventListener('canplay', function() {
+    if (audio.duration < minAudioDuration) {
+      game();
+      return;
+    }
+    audio.play();
+  });
   audio.src = src;
-  // document.body.appendChild(audio);
-  audio.play();
 }
 
 function waitForAudioStop() {
