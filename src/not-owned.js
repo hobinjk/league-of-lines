@@ -79,10 +79,49 @@ async function onChoice(elt, champion) {
   }
 }
 
+function flipChampCard(elt, delayMs) {
+  elt.classList.add('undealt');
+  let first = elt.getBoundingClientRect();
+  elt.classList.remove('undealt');
+  let last = elt.getBoundingClientRect();
+  let dx = first.left - last.left;
+  let dy = first.top - last.top;
+  let cardSpeed = 3;
+  let moveDuration = Math.sqrt(dx * dx + dy * dy) / cardSpeed;
+  let totalDuration = moveDuration + delayMs;
+
+  elt.animate([{
+    transform: `translate(${dx}px, ${dy}px)`,
+  }, {
+    transform: `translate(${dx}px, ${dy}px)`,
+    offset: delayMs / totalDuration,
+  }, {
+    transform: `none`
+  }], {
+    duration: totalDuration,
+    easing: 'ease-in-out',
+    fill: 'both',
+  });
+  // elt.animate([{
+  //   top: `${dy}px`
+  // }, {
+  //   top: `${dy}px`,
+  //   offset: delayMs / totalDuration,
+  // }, {
+  //   top: `0px`
+  // }], {
+  //   duration: totalDuration,
+  //   easing: 'ease-in-out',
+  //   fill: 'both',
+  // });
+}
+
 function createElements(champsPresent) {
   let container = document.createElement('div');
   container.classList.add('cards');
+  document.body.appendChild(container);
 
+  let delay = 0;
   for (const champion of Object.keys(champsPresent)) {
     let elt = document.createElement('div');
     elt.classList.add('champion-container');
@@ -94,34 +133,63 @@ function createElements(champsPresent) {
     container.appendChild(elt);
     champElements[champion] = elt;
   }
-  document.body.appendChild(container);
+  for (const champion of Object.keys(champsPresent)) {
+    let elt = champElements[champion];
+    flipChampCard(elt, delay);
+    delay += 50;
+  }
+
+
+  return delay;
 }
 
 function reset() {
   let cards = document.body.querySelector('.cards');
   cards.parentNode.removeChild(cards);
   champElements = null;
+  dealButton.classList.remove('dealing', 'dealt');
 }
 
 let champElements = null;
+let dealButton;
 
-function game() {
-  if (!champElements) {
-    champElements = {};
-    let champsPresent = {};
-    let remainingChampChoices = 24;
-    while (remainingChampChoices > 0) {
-      let choice = random(champions);
-      if (champsPresent[choice]) {
-        continue;
-      }
-      champsPresent[choice] = true;
-      remainingChampChoices -= 1;
-    }
+function onLoad() {
+  dealButton = document.createElement('div');
+  dealButton.classList.add('deck');
+  dealButton.addEventListener('click', function() {
+    deal();
+  });
+  document.body.appendChild(dealButton);
+}
 
-    createElements(champsPresent);
+function deal() {
+  if (champElements) {
+    reset();
   }
 
+  champElements = {};
+  let champsPresent = {};
+  let remainingChampChoices = 24;
+  while (remainingChampChoices > 0) {
+    let choice = random(champions);
+    if (champsPresent[choice]) {
+      continue;
+    }
+    champsPresent[choice] = true;
+    remainingChampChoices -= 1;
+  }
+
+  let dealDurationMs = createElements(champsPresent);
+  dealButton.classList.add('dealing');
+
+  setTimeout(() => {
+    dealButton.classList.add('dealt');
+    game();
+  }, dealDurationMs);
+}
+
+
+function game() {
   choose(champElements);
 }
 
@@ -138,4 +206,4 @@ function choose(champElements) {
   play(line);
 }
 
-game();
+onLoad();

@@ -1,19 +1,51 @@
 body {
   background: #222;
+  margin: 0;
+  padding: 0;
 }
 
 .cards {
+  margin: auto;
   display: grid;
-  width: 100%;
+  width: calc(11rem * 6 + 2rem * 5);
+  height: calc(20rem * 4 + 2rem * 3);
   grid-template-columns: repeat(6, 1fr);
 }
 
-.champion-container {
+.champion-container, .deck {
+  position: relative;
   width: 11rem;
   height: 20rem;
-  margin: 1rem;
   background-size: contain;
 }
+
+.deck {
+  transition: box-shadow 0.3s, opacity 0.3s;
+  background-image: url(/images/league.png);
+  box-shadow: 0 0 0.8rem rgba(0, 0, 0, 1);
+  z-index: 10;
+}
+
+.deck:hover {
+  box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.7);
+}
+
+.deck.dealing {
+  opacity: 0;
+}
+
+.deck.dealt {
+  display: none;
+}
+
+
+.deck, .champion-container.undealt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 
 .correct {
   opacity: 0.2;
