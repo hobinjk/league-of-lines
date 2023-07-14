@@ -40,10 +40,15 @@ function random(arr) {
 }
 
 let minAudioDuration = 2;
-let audio;
+let audio = document.createElement('audio');
+function safariWorkAround() {
+  let correctSfxSrc = document.createElement('source');
+  correctSfxSrc.src = correctSfx.src;
+  audio.appendChild(correctSfxSrc);
+}
+safariWorkAround();
+
 function play(src) {
-  audio = document.createElement('audio');
-  audio.controls = true;
   function onCanPlay() {
     let audioChampion = getChampion(src);
     if (audio.duration < minAudioDuration && audioChampion !== 'Rammus') {
@@ -55,6 +60,7 @@ function play(src) {
     audioStartTime = Date.now();
     audio.removeEventListener('canplay', onCanPlay);
   }
+  audio.innerHTML = '';
   audio.addEventListener('canplay', onCanPlay);
   let srcNormal = {
     src: `https://hobinjk.github.io/lines-of-league/${src}`,
@@ -70,6 +76,7 @@ function play(src) {
     source.type = src.type;
     audio.appendChild(source);
   }
+  audio.load();
 }
 
 function waitForAudioStop() {
@@ -246,6 +253,8 @@ function onLoad() {
   preloadChampImages(champsPresent);
 
   function onDealClick() {
+    audio.load();
+    audio.play();
     if (scoreElt) {
       scoreElt.classList.remove('showing-total');
       scoreElt.textContent = '';
