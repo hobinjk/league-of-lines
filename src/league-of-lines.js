@@ -15,7 +15,7 @@ function sleep(ms) {
 }
 
 let wrongSfx = document.createElement('audio');
-wrongSfx.src = 'sfx/Enemy_Missing_ping_SFX.ogg';
+wrongSfx.src = 'sfx/Enemy_Missing_ping_SFX.wav';
 
 let correctSfx = document.createElement('audio');
 correctSfx.src = 'sfx/Wallet Close.wav';
