@@ -4,6 +4,21 @@
     url("/fonts/Arsenal-Regular.ttf");
 }
 
+html {
+  font-size: 10px;
+}
+@media screen and (max-height: 920px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-height: 736px) {
+  html {
+    font-size: 6px;
+  }
+}
+
 body {
   background: #222;
   margin: 0;
@@ -13,6 +28,10 @@ body {
 }
 
 .cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   margin: auto;
   display: grid;
   width: calc(11rem * 6 + 2rem * 5);
@@ -33,7 +52,6 @@ body {
 .score.showing-total {
   text-align: end;
   padding-right: 60%;
-  padding-top: 0.5rem;
 }
 
 .champion-container, .deck {
@@ -94,7 +112,7 @@ body {
 }
 
 .wrong {
-  opacity: 0.2;
+  opacity: 0.4;
   transition: all 0.1s;
-  box-shadow: 0 0 0.8rem red;
+  box-shadow: 0 0 0.8rem #f00;
 }

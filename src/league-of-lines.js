@@ -23,7 +23,7 @@ correctSfx.volume = 0.7;
 const champions = getChampions();
 
 function getChampion(line) {
-  const name = line.split('/')[2];
+  const name = line.split('/')[1];
   return name;
 }
 function getChampions() {
@@ -49,9 +49,9 @@ function play(src) {
       return;
     }
     audio.play();
+    correctChampion = getChampion(src);
   });
-  // Strip leading slash
-  audio.src = src.substring(1);
+  audio.src = src;
   audioStartTime = Date.now();
 }
 
@@ -154,7 +154,7 @@ function createElements(champsPresent) {
   for (const champion of Object.keys(champsPresent)) {
     let elt = document.createElement('div');
     elt.classList.add('champion-container');
-    elt.style.backgroundImage = `url("/images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg")`;
+    elt.style.backgroundImage = `url("images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg")`;
     // elt.textContent = champion;
     elt.addEventListener('click', function() {
       onChoice(elt, champion);
@@ -262,7 +262,6 @@ function choose(champElements) {
       line.includes('Death') || !champElements[getChampion(line)]) {
     line = random(lines);
   }
-  correctChampion = getChampion(line);
   play(line);
 }
 
