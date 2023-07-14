@@ -7,6 +7,18 @@ const lines = linesRaw.filter(line => {
   let fileName = line.split('/').at(-1);
   return fileName.startsWith(champ);
 });
+function sleep(ms) {
+  return new Promise((res) => {
+    setTimeout(res, ms);
+  });
+}
+
+let wrongSfx = document.createElement('audio');
+wrongSfx.src = '/sfx/Enemy_Missing_ping_SFX.ogg';
+
+let correctSfx = document.createElement('audio');
+correctSfx.src = '/sfx/Wallet Close.wav';
+correctSfx.volume = 0.7;
 
 const champions = getChampions();
 
@@ -39,6 +51,7 @@ function play(src) {
     audio.play();
   });
   audio.src = src;
+  audioStartTime = Date.now();
 }
 
 function waitForAudioStop() {
@@ -55,10 +68,16 @@ function waitForAudioStop() {
 }
 
 let correctChampion = null;
+let scoreElt = null;
+
+let audioStartTime = 0;
 
 async function onChoice(elt, champion) {
   if (champion === correctChampion) {
+    correctSfx.play();
     elt.classList.add('correct');
+    let timeFormatted = ((Date.now() - audioStartTime) / 1000).toFixed(2);
+    champElements[champion].textContent = timeFormatted;
     delete champElements[champion];
     await waitForAudioStop();
     if (Object.keys(champElements).length > 0) {
@@ -67,14 +86,21 @@ async function onChoice(elt, champion) {
       }, 500);
     } else {
       setTimeout(() => {
-        reset();
-        game();
+        let total = Array.from(document.querySelectorAll('.champion-container')).reduce((total, elt) => {
+          return total + parseFloat(elt.textContent);
+        }, 0);
+        scoreElt.classList.add('showing-total');
+        scoreElt.textContent = `Score: ${total.toFixed(2)}s`;
+        resetDealButton();
       }, 2000);
     }
   } else {
     elt.classList.add('wrong');
     if (audio) {
-      audio.play();
+      wrongSfx.play();
+      setTimeout(() => {
+        audio.play();
+      }, 500);
     }
   }
 }
@@ -86,7 +112,7 @@ function flipChampCard(elt, delayMs) {
   let last = elt.getBoundingClientRect();
   let dx = first.left - last.left;
   let dy = first.top - last.top;
-  let cardSpeed = 3;
+  let cardSpeed = 2;
   let moveDuration = Math.sqrt(dx * dx + dy * dy) / cardSpeed;
   let totalDuration = moveDuration + delayMs;
 
@@ -121,7 +147,9 @@ function createElements(champsPresent) {
   container.classList.add('cards');
   document.body.appendChild(container);
 
-  let delay = 0;
+  let delay = Object.keys(champsPresent).length * 80 + 100;
+  let originalDelay = delay;
+  let i = 0;
   for (const champion of Object.keys(champsPresent)) {
     let elt = document.createElement('div');
     elt.classList.add('champion-container');
@@ -132,22 +160,34 @@ function createElements(champsPresent) {
     });
     container.appendChild(elt);
     champElements[champion] = elt;
+    if (i === 11) {
+      scoreElt = document.createElement('div');
+      scoreElt.classList.add('score');
+      scoreElt.textContent = '';
+      container.appendChild(scoreElt);
+    }
+    i += 1;
   }
   for (const champion of Object.keys(champsPresent)) {
     let elt = champElements[champion];
     flipChampCard(elt, delay);
-    delay += 50;
+    delay -= 80;
   }
 
 
-  return delay;
+  return originalDelay;
 }
 
-function reset() {
+function resetDealButton() {
+  dealButton.parentNode.removeChild(dealButton);
+  onLoad();
+}
+
+function resetBoard() {
   let cards = document.body.querySelector('.cards');
   cards.parentNode.removeChild(cards);
+  scoreElt.parentNode.removeChild(scoreElt);
   champElements = null;
-  dealButton.classList.remove('dealing', 'dealt');
 }
 
 let champElements = null;
@@ -155,16 +195,29 @@ let dealButton;
 
 function onLoad() {
   dealButton = document.createElement('div');
-  dealButton.classList.add('deck');
-  dealButton.addEventListener('click', function() {
-    deal();
+  dealButton.classList.add('deck', 'button');
+  dealButton.textContent = 'Play';
+  dealButton.addEventListener('click', function onDealClick() {
+    if (scoreElt) {
+      scoreElt.classList.remove('showing-total');
+      scoreElt.textContent = '';
+    }
+
+    function onTransitionEnd() {
+      dealButton.textContent = '';
+      deal();
+      dealButton.removeEventListener('transitionend', onTransitionEnd);
+    }
+    dealButton.classList.remove('button');
+    dealButton.addEventListener('transitionend', onTransitionEnd);
+    dealButton.removeEventListener('click', onDealClick);
   });
   document.body.appendChild(dealButton);
 }
 
 function deal() {
   if (champElements) {
-    reset();
+    resetBoard();
   }
 
   champElements = {};
@@ -182,8 +235,13 @@ function deal() {
   let dealDurationMs = createElements(champsPresent);
   dealButton.classList.add('dealing');
 
-  setTimeout(() => {
+  setTimeout(async () => {
     dealButton.classList.add('dealt');
+    for (let i = 10; i > 0; i--) {
+      scoreElt.textContent = i;
+      await sleep(1000);
+    }
+    scoreElt.textContent = '';
     game();
   }, dealDurationMs);
 }
@@ -199,7 +257,8 @@ function choose(champElements) {
   });
 
   let line = null;
-  while (!line || line.includes('SFX') || !champElements[getChampion(line)]) {
+  while (!line || line.includes('SFX') ||
+      line.includes('Death') || !champElements[getChampion(line)]) {
     line = random(lines);
   }
   correctChampion = getChampion(line);

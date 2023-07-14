@@ -1,29 +1,68 @@
+@font-face {
+  font-family: "Arsenal";
+  src: local("Arsenal")
+    url("/fonts/Arsenal-Regular.ttf");
+}
+
 body {
   background: #222;
   margin: 0;
   padding: 0;
+  font-family: "Arsenal";
+  color: #fff6a8;
 }
 
 .cards {
   margin: auto;
   display: grid;
   width: calc(11rem * 6 + 2rem * 5);
-  height: calc(20rem * 4 + 2rem * 3);
+  /*height: calc(20rem * 4 + 2rem * 3);*/
   grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr) 4rem repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.score {
+  grid-column: 1 / span 6;
+  font-size: 3rem;
+  text-align: center;
+  line-height: 4rem;
+  height: 4rem;
+}
+
+.score.showing-total {
+  text-align: end;
+  padding-right: 60%;
+  padding-top: 0.5rem;
 }
 
 .champion-container, .deck {
   position: relative;
   width: 11rem;
   height: 20rem;
+  line-height: 20rem;
+  font-size: 3rem;
+  text-align: center;
   background-size: contain;
+  cursor: pointer;
+}
+
+.deck.button {
+  height: 4rem;
+  line-height: 4rem;
+  color: rgba(255, 246, 168, 1);
+  text-shadow: black 0 0 0.2rem;
 }
 
 .deck {
-  transition: box-shadow 0.3s, opacity 0.3s;
+  transition: box-shadow 0.3s, opacity 0.3s, height 0.3s, line-height 0.3s, color 0.3s;
   background-image: url(/images/league.png);
+  background-size: 11rem 20rem;
+  background-position: center;
   box-shadow: 0 0 0.8rem rgba(0, 0, 0, 1);
   z-index: 10;
+  text-shadow: none;
+  color: rgba(255, 246, 168, 0);
 }
 
 .deck:hover {
@@ -51,6 +90,7 @@ body {
   opacity: 0.2;
   transition: all 0.1s;
   box-shadow: 0 0 0.8rem green;
+  text-shadow: black 0 0 0.2rem;
 }
 
 .wrong {
