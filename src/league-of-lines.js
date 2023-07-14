@@ -150,6 +150,13 @@ function flipChampCard(elt, delayMs) {
   // });
 }
 
+function preloadChampImages(champsPresent) {
+  for (const champion of Object.keys(champsPresent)) {
+    const img = document.createElement('img');
+    img.src = `images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg`;
+  }
+}
+
 function createElements(champsPresent) {
   let container = document.createElement('div');
   container.classList.add('cards');
@@ -203,11 +210,25 @@ function resetBoard() {
 
 let champElements = null;
 let dealButton;
+let champsPresent;
 
 function onLoad() {
   dealButton = document.createElement('div');
   dealButton.classList.add('deck', 'button');
   dealButton.textContent = 'Play';
+
+  champsPresent = {};
+  let remainingChampChoices = 24;
+  while (remainingChampChoices > 0) {
+    let choice = random(champions);
+    if (champsPresent[choice]) {
+      continue;
+    }
+    champsPresent[choice] = true;
+    remainingChampChoices -= 1;
+  }
+  preloadChampImages(champsPresent);
+
   function onDealClick() {
     if (scoreElt) {
       scoreElt.classList.remove('showing-total');
@@ -216,7 +237,7 @@ function onLoad() {
 
     function onTransitionEnd() {
       dealButton.textContent = '';
-      deal();
+      deal(champsPresent);
       dealButton.removeEventListener('transitionend', onTransitionEnd);
     }
     dealButton.classList.remove('button');
@@ -229,22 +250,12 @@ function onLoad() {
   document.body.appendChild(dealButton);
 }
 
-function deal() {
+function deal(champsPresent) {
   if (champElements) {
     resetBoard();
   }
 
   champElements = {};
-  let champsPresent = {};
-  let remainingChampChoices = 24;
-  while (remainingChampChoices > 0) {
-    let choice = random(champions);
-    if (champsPresent[choice]) {
-      continue;
-    }
-    champsPresent[choice] = true;
-    remainingChampChoices -= 1;
-  }
 
   let dealDurationMs = createElements(champsPresent);
   dealButton.classList.add('dealing');
