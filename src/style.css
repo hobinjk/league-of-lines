@@ -7,15 +7,21 @@
 html {
   font-size: 10px;
 }
-@media screen and (max-height: 920px) {
+@media screen and (max-height: 920px) and (max-width: 760px) {
   html {
     font-size: 8px;
   }
 }
 
-@media screen and (max-height: 736px) {
+@media screen and (max-height: 736px) and (max-width: 608px) {
   html {
     font-size: 6px;
+  }
+}
+
+@media screen and (max-height: 552px) and (max-width: 456px) {
+  html {
+    font-size: 4px;
   }
 }
 
