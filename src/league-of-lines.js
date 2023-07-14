@@ -7,6 +7,7 @@ const lines = linesRaw.filter(line => {
   let fileName = line.split('/').at(-1);
   return fileName.startsWith(champ);
 });
+
 function sleep(ms) {
   return new Promise((res) => {
     setTimeout(res, ms);
@@ -44,12 +45,13 @@ function play(src) {
   audio = document.createElement('audio');
   audio.controls = true;
   audio.addEventListener('canplay', function onCanPlay() {
-    if (audio.duration < minAudioDuration) {
+    let audioChampion = getChampion(src);
+    if (audio.duration < minAudioDuration && audioChampion !== 'Rammus') {
       game();
       return;
     }
     audio.play();
-    correctChampion = getChampion(src);
+    correctChampion = audioChampion;
     audioStartTime = Date.now();
     audio.removeEventListener('canplay', onCanPlay);
   });
