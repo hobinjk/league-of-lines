@@ -14,10 +14,10 @@ function sleep(ms) {
 }
 
 let wrongSfx = document.createElement('audio');
-wrongSfx.src = '/sfx/Enemy_Missing_ping_SFX.ogg';
+wrongSfx.src = 'sfx/Enemy_Missing_ping_SFX.ogg';
 
 let correctSfx = document.createElement('audio');
-correctSfx.src = '/sfx/Wallet Close.wav';
+correctSfx.src = 'sfx/Wallet Close.wav';
 correctSfx.volume = 0.7;
 
 const champions = getChampions();
@@ -50,7 +50,8 @@ function play(src) {
     }
     audio.play();
   });
-  audio.src = src;
+  // Strip leading slash
+  audio.src = src.substring(1);
   audioStartTime = Date.now();
 }
 
