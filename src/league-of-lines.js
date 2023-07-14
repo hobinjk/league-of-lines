@@ -127,6 +127,13 @@ async function onChoice(elt, champion) {
     }
   } else {
     elt.classList.add('wrong');
+    audioStartTime -= 5000;
+    scoreElt.textContent = '+5';
+    setTimeout(() => {
+      if (scoreElt.textContent === '+5') {
+        scoreElt.textContent = '';
+      }
+    }, 1000);
     if (audio) {
       wrongSfx.play();
       setTimeout(() => {
