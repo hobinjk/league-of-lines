@@ -44,7 +44,7 @@ let audio;
 function play(src) {
   audio = document.createElement('audio');
   audio.controls = true;
-  audio.addEventListener('canplay', function onCanPlay() {
+  function onCanPlay() {
     let audioChampion = getChampion(src);
     if (audio.duration < minAudioDuration && audioChampion !== 'Rammus') {
       game();
@@ -54,8 +54,22 @@ function play(src) {
     correctChampion = audioChampion;
     audioStartTime = Date.now();
     audio.removeEventListener('canplay', onCanPlay);
-  });
-  audio.src = src;
+  }
+  audio.addEventListener('canplay', onCanPlay);
+  let srcNormal = {
+    src: `https://hobinjk.github.io/lines-of-league/${src}`,
+    type: 'audio/ogg',
+  };
+  let srcBad = {
+    src: `https://hobinjk.github.io/lines-of-league/${src}.mp3`,
+    type: 'audio/mpeg',
+  };
+  for (let src of [srcNormal, srcBad]) {
+    let source = document.createElement('source');
+    source.src = src.src;
+    source.type = src.type;
+    audio.appendChild(source);
+  }
 }
 
 function waitForAudioStop() {
