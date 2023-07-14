@@ -75,6 +75,12 @@ let scoreElt = null;
 let audioStartTime = 0;
 
 async function onChoice(elt, champion) {
+  if (elt.classList.contains('correct')) {
+    return;
+  }
+  if (!correctChampion) {
+    return;
+  }
   if (champion === correctChampion) {
     correctSfx.play();
     elt.classList.add('correct');
