@@ -6,11 +6,13 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "deploy": "vite build && gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hobinjk@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "puppeteer": "^20.8.0",
     "vite": "^4.4.2"
   }
