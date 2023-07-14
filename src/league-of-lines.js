@@ -159,6 +159,9 @@ function createElements(champsPresent) {
     elt.addEventListener('click', function() {
       onChoice(elt, champion);
     });
+    elt.addEventListener('touchstart', function() {
+      onChoice(elt, champion);
+    });
     container.appendChild(elt);
     champElements[champion] = elt;
     if (i === 11) {
@@ -198,7 +201,7 @@ function onLoad() {
   dealButton = document.createElement('div');
   dealButton.classList.add('deck', 'button');
   dealButton.textContent = 'Play';
-  dealButton.addEventListener('click', function onDealClick() {
+  function onDealClick() {
     if (scoreElt) {
       scoreElt.classList.remove('showing-total');
       scoreElt.textContent = '';
@@ -212,7 +215,10 @@ function onLoad() {
     dealButton.classList.remove('button');
     dealButton.addEventListener('transitionend', onTransitionEnd);
     dealButton.removeEventListener('click', onDealClick);
-  });
+    dealButton.removeEventListener('touchstart', onDealClick);
+  }
+  dealButton.addEventListener('click', onDealClick);
+  dealButton.addEventListener('touchstart', onDealClick);
   document.body.appendChild(dealButton);
 }
 
