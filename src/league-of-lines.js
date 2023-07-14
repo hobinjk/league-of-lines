@@ -268,7 +268,10 @@ function deal(champsPresent) {
       scoreElt.textContent = i;
       await sleep(1000);
     }
-    scoreElt.textContent = '';
+    scoreElt.textContent = 'Select the matching champion';
+    setTimeout(() => {
+      scoreElt.textContent = '';
+    }, 4000);
     game();
   }, dealDurationMs);
 }
