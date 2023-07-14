@@ -69,6 +69,7 @@ body {
   text-align: center;
   background-size: contain;
   cursor: pointer;
+  user-select: none;
 }
 
 .deck.button {
