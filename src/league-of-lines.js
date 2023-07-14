@@ -43,16 +43,17 @@ let audio;
 function play(src) {
   audio = document.createElement('audio');
   audio.controls = true;
-  audio.addEventListener('canplay', function() {
+  audio.addEventListener('canplay', function onCanPlay() {
     if (audio.duration < minAudioDuration) {
       game();
       return;
     }
     audio.play();
     correctChampion = getChampion(src);
+    audioStartTime = Date.now();
+    audio.removeEventListener('canplay', onCanPlay);
   });
   audio.src = src;
-  audioStartTime = Date.now();
 }
 
 function waitForAudioStop() {
