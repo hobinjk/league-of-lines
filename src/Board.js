@@ -120,6 +120,18 @@ export class Board {
     return originalDelay;
   }
 
+  markWrong(champion) {
+    console.log('wrong!', champion);
+    this.champElements[champion].classList.add('wrongOther');
+  }
+
+  markCorrect(champion, isOurs) {
+    console.log('not wrong!', champion);
+    this.champElements[champion].classList.add(
+      isOurs ? 'correct' : 'correctOther');
+    delete this.champElements[champion];
+  }
+
   deal(onStart, onChoice) {
     if (this.champElements) {
       this.reset();
@@ -131,22 +143,26 @@ export class Board {
     this.dealButton.classList.add('dealing');
 
     setTimeout(async () => {
-      this.dealButton.classList.add('dealt');
-      for (let i = 10; i > 0; i--) {
-        this.scoreElt.textContent = i;
-        await sleep(1000);
-      }
-      this.scoreElt.textContent = 'Select the matching champion';
-      setTimeout(() => {
-        this.scoreElt.textContent = '';
-      }, 4000);
+      await this.countdown(10);
       onStart();
+      this.dealButton.classList.add('dealt');
     }, dealDurationMs);
   }
 
+  async countdown(seconds) {
+    for (let i = seconds; i > 0; i--) {
+      this.scoreElt.textContent = i;
+      await sleep(1000);
+    }
+    this.scoreElt.textContent = 'Select the matching champion';
+    setTimeout(() => {
+      this.scoreElt.textContent = '';
+    }, 4000);
+  }
+
   resetWrong() {
-    Array.from(document.body.querySelectorAll('.wrong')).forEach(e => {
-      e.classList.remove('wrong');
+    Array.from(document.body.querySelectorAll('.wrong, .wrongOther')).forEach(e => {
+      e.classList.remove('wrong', 'wrongOther');
     });
   }
 }

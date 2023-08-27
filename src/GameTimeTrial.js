@@ -12,7 +12,7 @@ function random(arr) {
 
 const minAudioDuration = 2;
 
-export class GameMulti {
+export class GameTimeTrial {
   constructor() {
     this.board = new Board(audio);
 

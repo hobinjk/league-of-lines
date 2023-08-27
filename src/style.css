@@ -60,7 +60,7 @@ body {
   padding-right: 60%;
 }
 
-.champion-container, .deck {
+.champion-container, .deck, .ready-button {
   position: relative;
   width: 11rem;
   height: 20rem;
@@ -72,7 +72,7 @@ body {
   user-select: none;
 }
 
-.deck.button {
+.deck.button, .ready-button {
   height: 4rem;
   line-height: 4rem;
   color: rgba(255, 246, 168, 1);
@@ -84,13 +84,16 @@ body {
   background-image: url(/images/league.png);
   background-size: 11rem 20rem;
   background-position: center;
-  box-shadow: 0 0 0.8rem rgba(0, 0, 0, 1);
-  z-index: 10;
-  text-shadow: none;
   color: rgba(255, 246, 168, 0);
 }
 
-.deck:hover {
+.deck, .ready-button {
+  box-shadow: 0 0 0.8rem rgba(0, 0, 0, 1);
+  z-index: 10;
+  text-shadow: none;
+}
+
+.deck:hover, .ready-button:hover {
   box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.7);
 }
 
@@ -102,7 +105,6 @@ body {
   display: none;
 }
 
-
 .deck, .champion-container.undealt {
   position: absolute;
   top: 50%;
@@ -110,16 +112,40 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.name-input {
+  position: absolute;
+  top: calc(50% - 0.5rem);
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.ready-button {
+  background-color: #3a281a;
+  position: absolute;
+  top: calc(50% + 0.5rem);
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
 
 .correct {
   opacity: 0.2;
   transition: all 0.1s;
   box-shadow: 0 0 0.8rem green;
   text-shadow: black 0 0 0.2rem;
+  pointer-events: none;
 }
 
-.wrong {
+.correctOther {
+  opacity: 0.2;
+  transition: all 0.1s;
+  box-shadow: 0 0 0.8rem grey;
+  text-shadow: black 0 0 0.2rem;
+  pointer-events: none;
+}
+
+.wrong, .wrongOther {
   opacity: 0.4;
   transition: all 0.1s;
   box-shadow: 0 0 0.8rem #f00;
+  pointer-events: none;
 }
