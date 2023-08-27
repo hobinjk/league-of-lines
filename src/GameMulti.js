@@ -25,6 +25,11 @@ export class GameMulti {
     this.onStart = this.onStart.bind(this);
 
     this.createReadyComponent();
+
+    this.scoresElt = document.createElement('div');
+    this.scoresElt.classList.add('scores');
+    document.body.appendChild(this.scoresElt);
+    this.scoreElts = {};
   }
 
   createReadyComponent() {
@@ -89,13 +94,6 @@ export class GameMulti {
     } else {
       this.comms.wrong(champion);
       elt.classList.add('wrong');
-      this.audioStartTime -= 5000;
-      this.board.scoreElt.textContent = '+5';
-      setTimeout(() => {
-        if (this.board.scoreElt.textContent === '+5') {
-          this.board.scoreElt.textContent = '';
-        }
-      }, 1000);
       if (audio) {
         wrongSfx.play();
         setTimeout(() => {
@@ -117,6 +115,7 @@ export class GameMulti {
       remainingChampChoices -= 1;
     }
 
+    this.comms.zeroScores();
     this.board.deal(this.onStart, this.onChoice);
 
     let line = null;
@@ -143,8 +142,38 @@ export class GameMulti {
     this.play(line);
   }
 
+  gameOver() {
+    let winners = {
+      ids: [],
+      score: 0,
+    };
+
+    for (let id in this.comms.scores) {
+      let score = this.comms.scores[id];
+      if (score > winners.score) {
+        winners.ids = [id];
+        winners.score = score;
+      } else if (score === winners.score) {
+        winners.ids.push(id);
+      }
+    }
+
+    let message = '';
+    if (winners.ids.length > 1) {
+      message = `Tie: ${winners.ids.join(', ')} win!`;
+    } else {
+      message = `${winners.ids[0]} wins!`;
+    }
+
+    this.board.gameOver(message);
+  }
+
   getNextLine() {
     this.board.resetWrong();
+    if (Object.keys(this.board.champElements).length === 0) {
+      this.gameOver();
+      return;
+    }
 
     this.getRandomLine();
 
@@ -153,5 +182,21 @@ export class GameMulti {
       audio.play();
       this.audioStartTime = Date.now();
     })();
+  }
+
+  updateScores() {
+    for (const id in this.comms.scores) {
+      if (!this.scoreElts[id]) {
+        let newElt = document.createElement('div');
+        newElt.classList.add('score-multi');
+        newElt.style.color = this.comms.getIdColor(id);
+        newElt.textContent = id + ': ';
+        let newScoreElt = document.createElement('span');
+        newElt.appendChild(newScoreElt);
+        this.scoresElt.appendChild(newElt);
+        this.scoreElts[id] = newScoreElt;
+      }
+      this.scoreElts[id].textContent = this.comms.scores[id];
+    }
   }
 }

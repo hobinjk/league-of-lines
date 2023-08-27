@@ -149,3 +149,17 @@ body {
   box-shadow: 0 0 0.8rem #f00;
   pointer-events: none;
 }
+
+.scores {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.score-multi {
+  display: inline-block;
+  padding: 0.1rem 1rem;
+  font-size: 2rem;
+}

@@ -38,6 +38,12 @@ export class Board {
     }
   }
 
+  gameOver(result) {
+    this.scoreElt.classList.add('showing-total');
+    this.scoreElt.textContent = result;
+    this.resetDealButton();
+  }
+
   onDealClick() {
     safariWorkAround();
 
@@ -156,7 +162,9 @@ export class Board {
     }
     this.scoreElt.textContent = 'Select the matching champion';
     setTimeout(() => {
-      this.scoreElt.textContent = '';
+      if (this.scoreElt.textContent === 'Select the matching champion') {
+        this.scoreElt.textContent = '';
+      }
     }, 4000);
   }
 
