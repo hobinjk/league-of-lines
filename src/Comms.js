@@ -36,6 +36,10 @@ export class Comms {
     this.addScore(this.id, 1);
   }
 
+  cursor(coords) {
+    this.send(`cursor ${this.id} ${coords.x} ${coords.y}`);
+  }
+
   addScore(id, val) {
     if (!this.scores[id]) {
       this.scores[id] = 0;
@@ -80,11 +84,11 @@ export class Comms {
         this.game.getNextLine();
       }
         break;
-      case 'mouse': {
+      case 'cursor': {
         let id = parts[1];
         let x = parseFloat(parts[2]);
         let y = parseFloat(parts[3]);
-        this.game.updateCursor(id, x, y);
+        this.game.board.updateCursor(id, {x, y});
       }
         break;
       case 'wrong': {
@@ -120,7 +124,7 @@ export class Comms {
   getIdColor(id) {
     if (!this.colors[id]) {
       let hue = 47 * Object.keys(this.colors).length;
-      this.colors[id] = `hsl(${hue}, 100%, 50%)`;
+      this.colors[id] = `hsl(${hue} 100% 50%)`;
     }
     return this.colors[id];
   }

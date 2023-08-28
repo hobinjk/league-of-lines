@@ -163,3 +163,13 @@ body {
   padding: 0.1rem 1rem;
   font-size: 2rem;
 }
+
+.cursor {
+  position: absolute;
+  height: 4rem;
+  transition: top 0.1s, left 0.1s, opacity 0.5s;
+}
+
+.cursor.inactive {
+  opacity: 0;
+}

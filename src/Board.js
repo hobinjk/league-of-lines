@@ -3,11 +3,17 @@ import { sleep } from './utilities.js';
 import { safariWorkAround } from './Audio.js';
 
 export class Board {
-  constructor() {
+  constructor(comms) {
+    this.comms = comms;
+
     this.dealButton = null;
     this.scoreElt = null;
+    this.cursors = {};
+    this.lastMouseMove = Date.now();
 
     this.onDealClick = this.onDealClick.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.update = this.update.bind(this);
   }
 
   createDealButton() {
@@ -25,8 +31,8 @@ export class Board {
   }
 
   reset() {
-    let cards = document.body.querySelector('.cards');
-    cards.parentNode.removeChild(cards);
+    this.container.removeEventListener('mousemove', this.onMouseMove);
+    this.container.parentNode.removeChild(this.container);
     this.scoreElt.parentNode.removeChild(this.scoreElt);
     this.champElements = null;
   }
@@ -89,9 +95,11 @@ export class Board {
   }
 
   createElements(onChoice) {
-    let container = document.createElement('div');
-    container.classList.add('cards');
-    document.body.appendChild(container);
+    this.container = document.createElement('div');
+    this.container.classList.add('cards');
+    document.body.appendChild(this.container);
+
+    this.container.addEventListener('mousemove', this.onMouseMove);
 
     let delay = Object.keys(this.champsPresent).length * 80 + 100;
     let originalDelay = delay;
@@ -107,13 +115,13 @@ export class Board {
       elt.addEventListener('touchstart', function() {
         onChoice(elt, champion);
       });
-      container.appendChild(elt);
+      this.container.appendChild(elt);
       this.champElements[champion] = elt;
       if (i === 11) {
         this.scoreElt = document.createElement('div');
         this.scoreElt.classList.add('score');
         this.scoreElt.textContent = '';
-        container.appendChild(this.scoreElt);
+        this.container.appendChild(this.scoreElt);
       }
       i += 1;
     }
@@ -122,6 +130,11 @@ export class Board {
       this.flipChampCard(elt, delay);
       delay -= 80;
     }
+
+    if (this.updateRequest) {
+      cancelAnimationFrame(this.updateRequest);
+    }
+    this.update();
 
     return originalDelay;
   }
@@ -172,6 +185,52 @@ export class Board {
     Array.from(document.body.querySelectorAll('.wrong, .wrongOther')).forEach(e => {
       e.classList.remove('wrong', 'wrongOther');
     });
+  }
+
+  update() {
+    let now = Date.now();
+    for (let id in this.cursors) {
+      let cursor = this.cursors[id];
+      if (now - cursor.lastUpdate > 2000) {
+        cursor.elt.classList.add('inactive');
+      } else {
+        cursor.elt.classList.remove('inactive');
+      }
+    }
+
+    this.updateRequest = requestAnimationFrame(this.update);
+  }
+
+  onMouseMove(event) {
+    if (Date.now() - this.lastMouseMove < 100) {
+      return;
+    }
+    this.lastMouseMove = Date.now();
+    let rect = this.container.getBoundingClientRect();
+    let x = Math.round((event.clientX - rect.left) / rect.width * 1000) / 1000;
+    let y = Math.round((event.clientY - rect.top) / rect.height * 1000) / 1000;
+    if (this.comms) {
+      this.comms.cursor({x, y});
+    }
+  }
+
+  updateCursor(id, coords) {
+    if (!this.cursors[id]) {
+      let color = this.comms.getIdColor(id);
+      let elt = document.createElement('img');
+      elt.classList.add('cursor');
+      console.log('color', color);
+      elt.style.filter = `drop-shadow(0 0 0.75rem ${color})`;
+      elt.src = 'images/normal.png';
+      this.container.appendChild(elt);
+      this.cursors[id] = {
+        lastUpdate: 0,
+        elt,
+      };
+    }
+    this.cursors[id].lastUpdate = Date.now();
+    this.cursors[id].elt.style.top = `${coords.y * 100}%`;
+    this.cursors[id].elt.style.left = `${coords.x * 100}%`;
   }
 }
 

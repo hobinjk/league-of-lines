@@ -11,12 +11,12 @@ const minAudioDuration = 2;
 
 export class GameMulti {
   constructor() {
-    this.board = new Board(audio);
 
     this.correctChampion = null;
     this.audioStartTime = 0;
 
     this.comms = new Comms(this);
+    this.board = new Board(this.comms);
 
     this.getNextLine = this.getNextLine.bind(this);
     this.play = this.play.bind(this);
