@@ -4,8 +4,11 @@ export class Comms {
   constructor(game) {
     this.game = game;
     this.onMessage = this.onMessage.bind(this);
-    this.ws = new WebSocket('ws://127.0.0.1:8080/ws');
+    this.ws = new WebSocket('wss://bytehaven.org/lol/ws');
     this.ws.addEventListener('message', this.onMessage);
+    this.ws.addEventListener('error', (e) => {
+      console.error(e);
+    });
     this.scores = {};
     this.colors = {};
     this.id = '';
