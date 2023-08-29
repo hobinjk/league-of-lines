@@ -1,4 +1,4 @@
-import * as seedrandom from 'seedrandom';
+import { default as seedrandom } from 'seedrandom';
 
 export class Comms {
   constructor(game) {
