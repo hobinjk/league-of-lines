@@ -72,7 +72,10 @@ body {
   user-select: none;
 }
 
-.deck.button, .ready-button {
+.deck.button, .ready-button, .game-button {
+  cursor: pointer;
+  font-size: 3rem;
+
   height: 4rem;
   line-height: 4rem;
   color: rgba(255, 246, 168, 1);
@@ -87,13 +90,13 @@ body {
   color: rgba(255, 246, 168, 0);
 }
 
-.deck, .ready-button {
+.deck, .ready-button, .game-button {
   box-shadow: 0 0 0.8rem rgba(0, 0, 0, 1);
   z-index: 10;
   text-shadow: none;
 }
 
-.deck:hover, .ready-button:hover {
+.deck:hover, .ready-button:hover, .game-button:hover {
   box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.7);
 }
 
@@ -119,12 +122,27 @@ body {
   transform: translate(-50%, -100%);
 }
 
-.ready-button {
+.ready-button, .game-button {
   background-color: #3a281a;
+}
+
+.ready-button {
   position: absolute;
   top: calc(50% + 0.5rem);
   left: 50%;
   transform: translate(-50%, 0%);
+}
+
+.game-button {
+  padding: 1rem;
+  margin: 2rem;
+}
+
+.button-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .correct {
