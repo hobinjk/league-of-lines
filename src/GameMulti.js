@@ -1,6 +1,6 @@
 import './style.css';
 
-import { wrongSfx, correctSfx, audio, waitForAudioStop, setAudioSrc } from './Audio.js';
+import { wrongSfx, correctSfx, audio, setAudioSrc, safariWorkAround } from './Audio.js';
 
 import { lines, champions, getChampion } from './lines.js';
 
@@ -47,6 +47,8 @@ export class GameMulti {
   }
 
   onClickReady() {
+    safariWorkAround();
+
     let name = this.nameInput.value.replace(/[^a-zA-Z0-9]/g, '') || ('Player' + Math.floor(Math.random() * 1000));
 
     this.nameInput.parentNode.removeChild(this.nameInput);
