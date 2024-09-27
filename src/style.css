@@ -122,11 +122,16 @@ body {
   transform: translate(-50%, -100%);
 }
 
-.rooms-select {
+.rooms-select-container {
   position: absolute;
   top: calc(50%);
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.rooms-select-label {
+  font-size: 2rem;
+  padding-right: 1rem;
 }
 
 .ready-button, .game-button {

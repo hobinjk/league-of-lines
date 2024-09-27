@@ -38,9 +38,20 @@ export class GameMulti {
     this.nameInput.classList.add('name-input');
     document.body.appendChild(this.nameInput);
 
+    this.roomsSelectContainer = document.createElement('div');
+    this.roomsSelectContainer.classList.add('rooms-select-container');
+
+    const roomsSelectLabel = document.createElement('label');
+    roomsSelectLabel.for = 'rooms-select';
+    roomsSelectLabel.classList.add('rooms-select-label');
+    roomsSelectLabel.textContent = 'Room';
+    this.roomsSelectContainer.appendChild(roomsSelectLabel);
+
     this.roomsSelect = document.createElement('select');
-    this.roomsSelect.classList.add('rooms-select');
-    document.body.appendChild(this.roomsSelect);
+    this.roomsSelect.id = 'rooms-select';
+    this.roomsSelectContainer.appendChild(this.roomsSelect);
+
+    document.body.appendChild(this.roomsSelectContainer);
 
     this.readyButton = document.createElement('div');
     this.readyButton.classList.add('ready-button');
@@ -57,7 +68,7 @@ export class GameMulti {
 
     this.nameInput.parentNode.removeChild(this.nameInput);
     this.readyButton.parentNode.removeChild(this.readyButton);
-    this.roomsSelect.parentNode.removeChild(this.roomsSelect);
+    this.roomsSelectContainer.parentNode.removeChild(this.roomsSelectContainer);
 
     this.comms.id = name;
     this.comms.joinRoom(this.roomsSelect.value || 'Purgatory');
