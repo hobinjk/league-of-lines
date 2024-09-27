@@ -33,7 +33,7 @@ export class Comms {
 
   start() {
     this.send(`/start ${this.id}`);
-    this.scores = {[this.id]: 0};
+    this.scores = { [this.id]: 0 };
   }
 
   correct(champion) {
@@ -97,7 +97,7 @@ export class Comms {
         let id = parts[1];
         let x = parseFloat(parts[2]);
         let y = parseFloat(parts[3]);
-        this.game.board.updateCursor(id, {x, y});
+        this.game.board.updateCursor(id, { x, y });
       }
         break;
       case 'wrong': {

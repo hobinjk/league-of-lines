@@ -127,7 +127,7 @@ export class GameMulti {
 
     let line = null;
     while (!line || line.includes('SFX') ||
-        line.includes('Death') || !this.board.champElements[getChampion(line)]) {
+      line.includes('Death') || !this.board.champElements[getChampion(line)]) {
       line = this.comms.random(lines);
     }
     this.play(line);
@@ -143,7 +143,7 @@ export class GameMulti {
   getRandomLine() {
     let line = null;
     while (!line || line.includes('SFX') ||
-        line.includes('Death') || !this.board.champElements[getChampion(line)]) {
+      line.includes('Death') || !this.board.champElements[getChampion(line)]) {
       line = this.comms.random(lines);
     }
     this.play(line);
