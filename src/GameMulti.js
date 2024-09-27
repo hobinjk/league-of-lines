@@ -38,6 +38,10 @@ export class GameMulti {
     this.nameInput.classList.add('name-input');
     document.body.appendChild(this.nameInput);
 
+    this.roomsSelect = document.createElement('select');
+    this.roomsSelect.classList.add('rooms-select');
+    document.body.appendChild(this.roomsSelect);
+
     this.readyButton = document.createElement('div');
     this.readyButton.classList.add('ready-button');
     this.readyButton.textContent = 'Ready';
@@ -53,9 +57,10 @@ export class GameMulti {
 
     this.nameInput.parentNode.removeChild(this.nameInput);
     this.readyButton.parentNode.removeChild(this.readyButton);
+    this.roomsSelect.parentNode.removeChild(this.roomsSelect);
 
     this.comms.id = name;
-    this.comms.joinRoom('ffa');
+    this.comms.joinRoom(this.roomsSelect.value || 'Purgatory');
 
     this.board.createDealButton();
     this.board.onDealt = () => {
@@ -199,6 +204,34 @@ export class GameMulti {
         this.scoreElts[id] = newScoreElt;
       }
       this.scoreElts[id].textContent = this.comms.scores[id];
+    }
+  }
+
+  updateRooms() {
+    let currentRoomOptions = this.roomsSelect.querySelectorAll('option');
+    let presentRooms = {};
+    for (const cro of currentRoomOptions) {
+      presentRooms[cro.dataset.room] = cro;
+    }
+
+    this.comms.rooms.sort((a, b) => {
+      return a[0].localeCompare(b[0]);
+    });
+
+    for (let roomAndOcc of this.comms.rooms) {
+      let [room, occ] = roomAndOcc.split(':');
+      if (room === 'main') {
+        continue;
+      }
+      let elt = presentRooms[room];
+      if (!elt) {
+        elt = document.createElement('option');
+        elt.dataset.room = room;
+        elt.dataset.occ = occ;
+        elt.value = room;
+        this.roomsSelect.appendChild(elt);
+      }
+      elt.textContent = `${room.replace(/_/g, ' ')}: ${occ}/5`; // gentle suggestion
     }
   }
 }

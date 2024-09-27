@@ -3,8 +3,10 @@ import { default as seedrandom } from 'seedrandom';
 export class Comms {
   constructor(game) {
     this.game = game;
+    this.onOpen = this.onOpen.bind(this);
     this.onMessage = this.onMessage.bind(this);
     this.ws = new WebSocket('wss://bytehaven.org/lol/ws');
+    this.ws.addEventListener('open', this.onOpen);
     this.ws.addEventListener('message', this.onMessage);
     this.ws.addEventListener('error', (e) => {
       console.error(e);
@@ -68,6 +70,10 @@ export class Comms {
     this.ws.send(msg);
   }
 
+  onOpen() {
+    this.send('/list');
+  }
+
   onMessage(event) {
     let msg = event.data;
     msg = msg.split(': ').at(-1);
@@ -111,6 +117,11 @@ export class Comms {
           this.send(`ready ${this.id}`);
           this.game.updateScores();
         }
+      }
+      case '/rooms': {
+        let allRooms = parts.slice(1, parts.length);
+        this.rooms = allRooms;
+        this.game.updateRooms();
       }
         break;
     }

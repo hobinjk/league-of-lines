@@ -117,9 +117,16 @@ body {
 
 .name-input {
   position: absolute;
-  top: calc(50% - 0.5rem);
+  top: calc(50% - 3rem);
   left: 50%;
   transform: translate(-50%, -100%);
+}
+
+.rooms-select {
+  position: absolute;
+  top: calc(50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .ready-button, .game-button {
@@ -128,7 +135,7 @@ body {
 
 .ready-button {
   position: absolute;
-  top: calc(50% + 0.5rem);
+  top: calc(50% + 3rem);
   left: 50%;
   transform: translate(-50%, 0%);
 }
