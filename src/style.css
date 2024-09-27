@@ -67,9 +67,14 @@ body {
   line-height: 20rem;
   font-size: 3rem;
   text-align: center;
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
   cursor: pointer;
   user-select: none;
+}
+
+.champion-container {
+  box-shadow: inset 0 0 0.3rem black;
 }
 
 .deck.button, .ready-button, .game-button {
@@ -202,4 +207,12 @@ body {
 
 .cursor.inactive {
   opacity: 0;
+}
+
+.mode-switch-link {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 2rem;
+  color: #fff6a8;
 }

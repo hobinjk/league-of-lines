@@ -1,7 +1,14 @@
 import { sleep } from './utilities.js';
 
 import { safariWorkAround } from './Audio.js';
+import { isHots } from './isHots.js';
 
+function championToImageUrl(champion) {
+  if (isHots) {
+    return `images/${champion}/${champion.replace(/[._]/g, '').replace('The', '')}Art.jpg`;
+  }
+  return `images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg`;
+}
 export class Board {
   constructor(comms) {
     this.comms = comms;
@@ -40,7 +47,7 @@ export class Board {
   preloadChampImages(champsPresent) {
     for (const champion of Object.keys(champsPresent)) {
       const img = document.createElement('img');
-      img.src = `images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg`;
+      img.src = championToImageUrl(champion);
     }
   }
 
@@ -107,7 +114,7 @@ export class Board {
     for (const champion of Object.keys(this.champsPresent)) {
       let elt = document.createElement('div');
       elt.classList.add('champion-container');
-      elt.style.backgroundImage = `url("images/${champion.replace(/_/g, '+')}/${champion}_OriginalLoading.jpg")`;
+      elt.style.backgroundImage = `url("${championToImageUrl(champion)}")`;
       // elt.textContent = champion;
       elt.addEventListener('click', function() {
         onChoice(elt, champion);
