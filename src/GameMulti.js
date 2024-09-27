@@ -7,7 +7,7 @@ import { lines, champions, getChampion } from './lines.js';
 import { Board } from './Board.js';
 import { Comms } from './Comms.js';
 
-const minAudioDuration = 2;
+const minAudioDuration = 3;
 
 export class GameMulti {
   constructor() {
