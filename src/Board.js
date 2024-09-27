@@ -210,7 +210,7 @@ export class Board {
     let x = Math.round((event.clientX - rect.left) / rect.width * 1000) / 1000;
     let y = Math.round((event.clientY - rect.top) / rect.height * 1000) / 1000;
     if (this.comms) {
-      this.comms.cursor({x, y});
+      this.comms.cursor({ x, y });
     }
   }
 
