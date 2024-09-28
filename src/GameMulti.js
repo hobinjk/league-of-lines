@@ -57,7 +57,7 @@ export class GameMulti {
     this.readyButton.classList.add('ready-button');
     this.readyButton.textContent = 'Ready';
     this.readyButton.addEventListener('click', this.onClickReady);
-    this.readyButton.addEventListener('touchstart', this.onClickReady);
+    this.readyButton.addEventListener('touchend', this.onClickReady);
     document.body.appendChild(this.readyButton);
   }
 
