@@ -28,7 +28,7 @@ export class Board {
     this.dealButton.classList.add('deck', 'button');
     this.dealButton.textContent = 'Play';
     this.dealButton.addEventListener('click', this.onDealClick);
-    this.dealButton.addEventListener('touchend', this.onDealClick);
+    this.dealButton.addEventListener('touchstart', this.onDealClick);
     document.body.appendChild(this.dealButton);
   }
 
@@ -73,7 +73,7 @@ export class Board {
     this.dealButton.classList.remove('button');
     this.dealButton.addEventListener('transitionend', onTransitionEnd);
     this.dealButton.removeEventListener('click', this.onDealClick);
-    this.dealButton.removeEventListener('touchend', this.onDealClick);
+    this.dealButton.removeEventListener('touchstart', this.onDealClick);
   }
 
   flipChampCard(elt, delayMs) {
@@ -119,7 +119,7 @@ export class Board {
       elt.addEventListener('click', function() {
         onChoice(elt, champion);
       });
-      elt.addEventListener('touchend', function() {
+      elt.addEventListener('touchstart', function() {
         onChoice(elt, champion);
       });
       this.container.appendChild(elt);

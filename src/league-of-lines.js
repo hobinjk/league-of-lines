@@ -24,7 +24,7 @@ const trialButton = document.createElement('div');
 trialButton.classList.add('game-button');
 trialButton.textContent = 'Time Trial';
 trialButton.addEventListener('click', startTimeTrial);
-trialButton.addEventListener('touchend', startTimeTrial);
+trialButton.addEventListener('touchstart', startTimeTrial);
 buttonContainer.appendChild(trialButton);
 
 
@@ -32,7 +32,7 @@ const multiButton = document.createElement('div');
 multiButton.classList.add('game-button');
 multiButton.textContent = 'Multiplayer';
 multiButton.addEventListener('click', startMulti);
-multiButton.addEventListener('touchend', startMulti);
+multiButton.addEventListener('touchstart', startMulti);
 buttonContainer.appendChild(multiButton);
 
 document.body.appendChild(buttonContainer);
