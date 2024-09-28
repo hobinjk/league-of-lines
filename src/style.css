@@ -7,11 +7,11 @@
 html {
   /**
    * Minimum among 3 constraints:
-   * height: 4 card rows (20rem), 1 score row (4rem), 4 gaps (2rem) and 2rem of border
+   * height: 4 card rows (20rem), 1 score row (4rem), 4 gaps (2rem), 3 rem of scores (* 2 because it's top and bottom) and 2rem of border
    * width: 6 card columns (11rem), 5 gaps (2rem) and 2rem of border
    * 18px as max to just not get tooo big
    */
-  font-size: min(calc(100vh / (4 * 20 + 4 + 4 * 2 + 2)), calc(100vw / (11 * 6 + 2 * 5 + 2)), 18px);
+  font-size: min(calc(100vh / (4 * 20 + 4 + 4 * 2 + 2 * 3 + 2)), calc(100vw / (11 * 6 + 2 * 5 + 2)), 18px);
 }
 
 body {
@@ -184,6 +184,7 @@ body {
   text-align: center;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 100%;
 }
 
 .score-multi {
