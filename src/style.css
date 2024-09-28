@@ -5,24 +5,13 @@
 }
 
 html {
-  font-size: 10px;
-}
-@media screen and (max-height: 920px), screen and (max-width: 760px) {
-  html {
-    font-size: 8px;
-  }
-}
-
-@media screen and (max-height: 736px), screen and (max-width: 608px) {
-  html {
-    font-size: 6px;
-  }
-}
-
-@media screen and (max-height: 552px), screen and (max-width: 456px) {
-  html {
-    font-size: 4px;
-  }
+  /**
+   * Minimum among 3 constraints:
+   * height: 4 card rows (20rem), 1 score row (4rem), 4 gaps (2rem) and 2rem of border
+   * width: 6 card columns (11rem), 5 gaps (2rem) and 2rem of border
+   * 18px as max to just not get tooo big
+   */
+  font-size: min(calc(100vh / (4 * 20 + 4 + 4 * 2 + 2)), calc(100vw / (11 * 6 + 2 * 5 + 2)), 18px);
 }
 
 body {
@@ -38,10 +27,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: auto;
   display: grid;
-  width: calc(11rem * 6 + 2rem * 5);
-  /*height: calc(20rem * 4 + 2rem * 3);*/
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(2, 1fr) 4rem repeat(2, 1fr);
   gap: 2rem;
