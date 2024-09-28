@@ -91,6 +91,13 @@ body {
   box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.7);
 }
 
+.button-disabled {
+  pointer-events: none;
+  filter: grayscale(50%);
+  opacity: 0.7;
+  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 1);
+}
+
 .deck.dealing {
   opacity: 0;
 }

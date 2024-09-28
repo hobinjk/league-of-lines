@@ -54,8 +54,10 @@ export class GameMulti {
     document.body.appendChild(this.roomsSelectContainer);
 
     this.readyButton = document.createElement('div');
-    this.readyButton.classList.add('ready-button');
+    this.readyButton.classList.add('ready-button', 'button-disabled');
     this.readyButton.textContent = 'Ready';
+    this.readyButton.addEventListener('click', this.onClickReady);
+    this.readyButton.addEventListener('touchstart', this.onClickReady);
     document.body.appendChild(this.readyButton);
   }
 
@@ -217,6 +219,10 @@ export class GameMulti {
   }
 
   updateRooms() {
+    setTimeout(() => {
+      this.readyButton.classList.remove('button-disabled');
+    }, 500);
+
     let currentRoomOptions = this.roomsSelect.querySelectorAll('option');
     let presentRooms = {};
     for (const cro of currentRoomOptions) {
@@ -242,11 +248,5 @@ export class GameMulti {
       }
       elt.textContent = `${room.replace(/_/g, ' ')}: ${occ}/5`; // gentle suggestion
     }
-
-    // Remove before add to prevent double add
-    this.readyButton.removeEventListener('click', this.onClickReady);
-    this.readyButton.removeEventListener('touchstart', this.onClickReady);
-    this.readyButton.addEventListener('click', this.onClickReady);
-    this.readyButton.addEventListener('touchstart', this.onClickReady);
   }
 }
