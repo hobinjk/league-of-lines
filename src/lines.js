@@ -9,6 +9,9 @@ export const lines = linesRaw.filter(line => {
   if (isHots) {
     return true;
   }
+  if (line.includes('BasicAttack')) {
+    return false;
+  }
   let champ = getChampion(line);
   let fileName = line.split('/').at(-1);
   return fileName.startsWith(champ);

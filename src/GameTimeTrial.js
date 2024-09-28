@@ -10,7 +10,7 @@ function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const minAudioDuration = 3;
+const minAudioDuration = 2;
 
 export class GameTimeTrial {
   constructor() {
