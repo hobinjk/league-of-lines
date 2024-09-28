@@ -129,7 +129,8 @@ export class GameTimeTrial {
 
     let line = null;
     while (!line || line.includes('SFX') ||
-      line.includes('Death') || !champElements[getChampion(line)]) {
+      (line.includes('Death') && !line.includes('Deathwing')) || // tricksy little dragon
+      !champElements[getChampion(line)]) {
       line = random(lines);
     }
     this.play(line);
