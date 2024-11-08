@@ -21,6 +21,7 @@ export class Board {
     this.onDealClick = this.onDealClick.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.update = this.update.bind(this);
+    this.countingDown = false;
   }
 
   createDealButton() {
@@ -116,11 +117,15 @@ export class Board {
       elt.classList.add('champion-container');
       elt.style.backgroundImage = `url("${championToImageUrl(champion)}")`;
       // elt.textContent = champion;
-      elt.addEventListener('click', function() {
-        onChoice(elt, champion);
+      elt.addEventListener('click', () => {
+        if (!this.countingDown) {
+          onChoice(elt, champion);
+        }
       });
-      elt.addEventListener('touchstart', function() {
-        onChoice(elt, champion);
+      elt.addEventListener('touchstart', () => {
+        if (!this.countingDown) {
+          onChoice(elt, champion);
+        }
       });
       this.container.appendChild(elt);
       this.champElements[champion] = elt;
@@ -176,11 +181,14 @@ export class Board {
   }
 
   async countdown(seconds) {
+    this.countingDown = true;
     for (let i = seconds; i > 0; i--) {
       this.scoreElt.textContent = i;
       await sleep(1000);
     }
     this.scoreElt.textContent = 'Select the matching champion';
+    this.countingDown = false;
+
     setTimeout(() => {
       if (this.scoreElt.textContent === 'Select the matching champion') {
         this.scoreElt.textContent = '';
